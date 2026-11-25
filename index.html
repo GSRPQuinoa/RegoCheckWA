@@ -1,35 +1,17 @@
 <!doctype html>
-<html lang="en-AU">
-<head>
+<html lang="en-AU"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101820"><meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="WA Vehicle Check">
-<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
-<link rel="stylesheet" href="/styles.css"><title>WA Vehicle Check</title>
-</head>
-<body>
-<header><div class="logo">WA</div><div><b>WA Vehicle Check</b><small>Registration → vehicle details</small></div><span class="spacer"></span><span class="live">LIVE LOOKUP</span></header>
-<main>
-<section class="intro">
- <p class="eyebrow">WESTERN AUSTRALIA</p><h1>Identify a vehicle</h1>
- <p class="muted">Enter a rego once to retrieve the vehicle, engine and drivetrain details.</p>
- <form id="lookupForm"><label for="plate">Registration number</label><div class="search"><input id="plate" maxlength="10" placeholder="e.g. 1ABC123" autocomplete="off" autocapitalize="characters" required><button id="search" type="submit">Search</button></div><div class="state">State <strong>WA · Western Australia</strong></div></form>
-</section>
+<meta name="theme-color" content="#111b27"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="WA Vehicle">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icons/icon-192.png"><link rel="stylesheet" href="./styles.css"><title>WA Vehicle Check</title></head>
+<body><header><div class="logo">WA</div><div><b>Vehicle Check</b><small>Western Australia</small></div><span class="spacer"></span><span class="live">● LIVE LOOKUP</span></header>
+<main><section class="intro"><p class="eyebrow">REGISTRATION LOOKUP</p><h1>Identify a vehicle<span>.</span></h1><p class="muted">Enter a rego to find the vehicle, engine and drivetrain.</p>
+<form id="lookupForm"><label for="plate">WA registration</label><div class="search"><input id="plate" maxlength="10" placeholder="1ABC123" autocomplete="off" autocapitalize="characters" required><button id="search" type="submit">Search <b>→</b></button></div><div class="state">● Searching Western Australia</div></form></section>
 <div id="status" class="status hidden" role="status"></div>
-<section id="result" class="result hidden">
- <div class="resulttop"><div><p class="eyebrow">LOOKUP RESULT</p><h2 id="resultPlate"></h2></div><span id="matchTag" class="tag"></span></div>
- <div class="vehicle"><p class="eyebrow">VEHICLE</p><h2 id="vehicleName">—</h2><p id="vehicleYears" class="muted"></p><p id="vehicleDesc" class="description"></p></div>
- <div class="facts">
-  <article><span class="facticon">⚙</span><p class="eyebrow">ENGINE</p><strong id="engine">Unknown</strong><small id="engineCode"></small></article>
-  <article><span class="facticon">↗</span><p class="eyebrow">DRIVETRAIN</p><strong id="drive">Unknown</strong><small id="driveExplain">Not confirmed by source</small></article>
- </div>
- <div id="alternativesWrap" class="alternatives hidden"><h3>Other possible variants</h3><p class="muted">The registration matches more than one variant. Choose the correct one if you know it.</p><div id="alternatives"></div></div>
- <details><summary>Raw source details</summary><pre id="raw"></pre></details>
- <p class="source">Source: PlateAPI · WA registration lookup. Always verify important details against the vehicle itself.</p>
-</section>
-<section class="recent"><div class="sectionhead"><h2>Recent searches</h2><button id="clear" class="linkbtn">Clear</button></div><div id="history"><p class="muted">Your searches will appear here on this device.</p></div></section>
-<footer>Independent app · Not affiliated with WA DoT or Repco. Vehicle data availability depends on the provider's records.</footer>
-</main>
-<nav><span class="selected">⌕<small>Lookup</small></span><span id="historyNav">◷<small>History</small></span></nav>
-<script src="/app.js"></script>
-</body></html>
+<section id="result" class="result hidden"><div class="resulttop"><div><p class="eyebrow">SEARCH RESULT</p><h2 id="resultPlate"></h2></div><span id="matchTag" class="tag"></span></div>
+<div class="vehicle"><p class="eyebrow">IDENTIFIED VEHICLE</p><h2 id="vehicleName">—</h2><p id="vehicleYears" class="muted"></p><p id="vehicleDesc" class="description"></p></div>
+<div class="facts"><article><span class="facticon">⚙</span><p class="eyebrow">ENGINE</p><strong id="engine">Unknown</strong><small id="engineCode"></small></article><article><span class="facticon">↗</span><p class="eyebrow">DRIVETRAIN</p><strong id="drive">Unknown</strong><small id="driveExplain">Not confirmed by source</small></article></div>
+<div id="alternativesWrap" class="alternatives hidden"><h3>Other possible variants</h3><p class="muted">Choose the correct variant if you know it.</p><div id="alternatives"></div></div>
+<details><summary>Technical source data</summary><pre id="raw"></pre></details><p class="source">Source: PlateAPI. Verify important details against the vehicle.</p></section>
+<section class="recent" id="recent"><div class="sectionhead"><h2>Recent searches</h2><button id="clear" class="linkbtn">Clear</button></div><div id="history"><p class="muted">Your recent registrations will appear here.</p></div></section>
+<footer>Independent vehicle lookup · Not affiliated with WA DoT or Repco.</footer></main>
+<nav><a class="selected" href="#">⌕<small>Search</small></a><a id="historyNav" href="#recent">◷<small>History</small></a></nav><script src="./app.js"></script></body></html>
