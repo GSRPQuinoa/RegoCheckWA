@@ -1,50 +1,52 @@
-# WA Rego Companion
+# WA Vehicle Check — live PlateAPI integration
 
-An iPhone-friendly Progressive Web App (PWA) shell for keeping WA DoT and public Repco vehicle lookup entry points together.
+A mobile-first PWA for WA registration lookups. Enter a plate once; the server calls PlateAPI with `state=WA` and `detailed=true`, then the app displays vehicle, engine and explicit drivetrain details where the source provides them.
 
-## Important integration limitation
+## Security — read first
 
-This first version is a **single app interface**, but it does not automatically retrieve or merge the providers' returned data.
+**Never commit an API key to GitHub or put it in browser JavaScript.** The key belongs in Vercel's encrypted Environment Variables as `PLATEAPI_KEY`. The included `.gitignore` excludes local `.env` files.
 
-- Repco's website terms prohibit spidering, scraping, robots, and other automated access to its website content.
-- WA DoT's online service terms also restrict automated access. The official service may also block being embedded in another website.
-- Because neither provider has supplied an approved public API/integration for this project, this app does not scrape either service, bypass browser protections, or claim to display verified results itself.
+If an API key has been pasted into a chat, ticket, screenshot, or repository, rotate it in the provider dashboard before deployment and use the new key only in Vercel.
 
-The app attempts to show both provider websites inside the app panels. If a provider blocks embedding, use **Open official site**. The provider may require the plate to be entered again. This is a functional launch point, not a verified automated dual-search integration.
+## Deploy with GitHub + Vercel
 
-Official entry points:
-- WA DoT vehicle rego check: https://online.transport.wa.gov.au/webExternal/registration/?0
-- Repco public website: https://www.repco.com.au/
+1. Rotate the key that was shared in chat.
+2. Create a new private GitHub repository (recommended) named `wa-vehicle-check`.
+3. Extract this ZIP and upload the project files/folders to the repository root.
+4. Create/sign into Vercel at https://vercel.com and choose **Add New → Project**.
+5. Import the `wa-vehicle-check` GitHub repository. Vercel detects the serverless function in `api/lookup.js`.
+6. In project **Settings → Environment Variables**, add:
+   - Name: `PLATEAPI_KEY`
+   - Value: your newly rotated PlateAPI key
+   - Environments: Production, Preview (optional), Development (optional)
+7. Save, then **Deploy**. If you add/change the key later, redeploy.
+8. Open the Vercel deployment URL on iPhone Safari → Share → Add to Home Screen.
 
-## Publish using GitHub Pages
+## Test
 
-1. Create a new GitHub repository, e.g. `wa-rego-companion`.
-2. Upload all files and folders from this project to the repository root (not the ZIP file itself).
-3. In GitHub, open **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select branch **main**, folder **/(root)**, then Save.
-6. Wait for GitHub Pages to publish. Your app URL will look like `https://YOUR-USERNAME.github.io/wa-rego-companion/`.
+PlateAPI documents `TEST123` as a permanent sandbox plate. It returns a fixed Toyota Hilux example and does not consume lookup quota. Search `TEST123` in the app after deployment to test the complete connection. It is a sandbox response, not a real registration result.
 
-## Install on iPhone
+## What the app returns
 
-1. Open the published GitHub Pages URL in Safari.
-2. Tap **Share**.
-3. Choose **Add to Home Screen**.
-4. Enable **Open as Web App** if shown, then tap **Add**.
+- Vehicle make/model and model-year range
+- Engine displacement and engine code if present in `detailed_description`
+- Drivetrain: RWD, FWD, AWD or 4WD only when explicitly present in the provider data
+- Alternative variants if the provider says the plate match is multiple/ambiguous
 
-## Local preview
+The app deliberately displays **Unknown** rather than guessing if drivetrain or engine data is absent. A plate lookup may return multiple candidate variants; choose the correct candidate where necessary.
 
-You can open `index.html` for a basic preview. Service-worker/offline installation requires HTTPS or localhost.
+## API details
 
-## Files
+Server function calls:
+`GET https://api.plateapi.com.au/api/v1/lookup?plate=...&state=WA&detailed=true`
 
-- `index.html` – app interface
-- `styles.css` – responsive iPhone styling
-- `app.js` – search history and provider panels
-- `manifest.webmanifest` – installable app metadata
-- `sw.js` – basic offline caching
-- `icons/` – app icons
+Authentication header:
+`X-API-Key: <PLATEAPI_KEY>`
 
-## Next step for true automatic results
+Only the serverless function sees the key. The browser calls the same-origin `/api/lookup` endpoint.
 
-To show merged DoT and Repco results without leaving the app, the providers must authorise an API, data feed, or supported integration. Add those credentials and documented endpoints on a secure backend (never put private API keys in the public GitHub Pages code).
+PlateAPI documentation: https://plateapi.com.au/docs/lookup/
+
+## Important
+
+This is a personal-use lookup interface. Check PlateAPI's current plan and terms for your intended deployment/use. The app does not scrape WA DoT or Repco websites. It displays the vehicle information returned by PlateAPI; it is not a substitute for an official registration-status check.
