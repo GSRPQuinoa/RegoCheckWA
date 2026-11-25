@@ -1,52 +1,37 @@
-# WA Vehicle Check — live PlateAPI integration
+# WA Vehicle Check
 
-A mobile-first PWA for WA registration lookups. Enter a plate once; the server calls PlateAPI with `state=WA` and `detailed=true`, then the app displays vehicle, engine and explicit drivetrain details where the source provides them.
+A simple mobile-friendly Western Australian registration lookup app. It uses PlateAPI to retrieve the make, model, year range, engine and drivetrain details where the provider supplies them.
 
-## Security — read first
+## Deploy it
 
-**Never commit an API key to GitHub or put it in browser JavaScript.** The key belongs in Vercel's encrypted Environment Variables as `PLATEAPI_KEY`. The included `.gitignore` excludes local `.env` files.
+This project needs **Vercel** (or another serverless host) because `api/lookup.js` is a backend function. GitHub Pages alone cannot run that API function.
 
-If an API key has been pasted into a chat, ticket, screenshot, or repository, rotate it in the provider dashboard before deployment and use the new key only in Vercel.
+1. Rotate any PlateAPI key that has been shared in a chat, screenshot or repository.
+2. Sign in to [Vercel](https://vercel.com).
+3. Choose **Add New → Project**, then import `GSRPQuinoa/RegoCheckWA` from GitHub.
+4. In the Vercel project, open **Settings → Environment Variables**.
+5. Add `PLATEAPI_KEY` and paste your newly rotated PlateAPI key as its value. Do not add the key to any website file or commit it to GitHub.
+6. Deploy (or redeploy after adding the environment variable).
+7. Open the Vercel URL and test with PlateAPI's free sandbox plate `TEST123`. It should return a Toyota Hilux sandbox example, not a real registration.
+8. On iPhone, open the Vercel URL in Safari → Share → Add to Home Screen.
 
-## Deploy with GitHub + Vercel
+## What it shows
 
-1. Rotate the key that was shared in chat.
-2. Create a new private GitHub repository (recommended) named `wa-vehicle-check`.
-3. Extract this ZIP and upload the project files/folders to the repository root.
-4. Create/sign into Vercel at https://vercel.com and choose **Add New → Project**.
-5. Import the `wa-vehicle-check` GitHub repository. Vercel detects the serverless function in `api/lookup.js`.
-6. In project **Settings → Environment Variables**, add:
-   - Name: `PLATEAPI_KEY`
-   - Value: your newly rotated PlateAPI key
-   - Environments: Production, Preview (optional), Development (optional)
-7. Save, then **Deploy**. If you add/change the key later, redeploy.
-8. Open the Vercel deployment URL on iPhone Safari → Share → Add to Home Screen.
+- Registration lookup for WA
+- Vehicle make, model and year range
+- Engine displacement and engine code when supplied
+- RWD, FWD, AWD or 4WD when explicitly present in the provider's detailed vehicle description
+- Alternative variants when PlateAPI returns multiple matches
+- Recent searches stored locally on the device
 
-## Test
+The app shows **Unknown** rather than guessing if the provider does not supply a drivetrain or engine detail. Always verify important details against the vehicle itself.
 
-PlateAPI documents `TEST123` as a permanent sandbox plate. It returns a fixed Toyota Hilux example and does not consume lookup quota. Search `TEST123` in the app after deployment to test the complete connection. It is a sandbox response, not a real registration result.
+## API configuration
 
-## What the app returns
+The backend calls:
 
-- Vehicle make/model and model-year range
-- Engine displacement and engine code if present in `detailed_description`
-- Drivetrain: RWD, FWD, AWD or 4WD only when explicitly present in the provider data
-- Alternative variants if the provider says the plate match is multiple/ambiguous
-
-The app deliberately displays **Unknown** rather than guessing if drivetrain or engine data is absent. A plate lookup may return multiple candidate variants; choose the correct candidate where necessary.
-
-## API details
-
-Server function calls:
 `GET https://api.plateapi.com.au/api/v1/lookup?plate=...&state=WA&detailed=true`
 
-Authentication header:
-`X-API-Key: <PLATEAPI_KEY>`
+Authentication is sent in the `X-API-Key` header using the server-side `PLATEAPI_KEY` environment variable. The browser calls the same-origin `/api/lookup` endpoint; the key is never sent to browser JavaScript.
 
-Only the serverless function sees the key. The browser calls the same-origin `/api/lookup` endpoint.
-
-PlateAPI documentation: https://plateapi.com.au/docs/lookup/
-
-## Important
-
-This is a personal-use lookup interface. Check PlateAPI's current plan and terms for your intended deployment/use. The app does not scrape WA DoT or Repco websites. It displays the vehicle information returned by PlateAPI; it is not a substitute for an official registration-status check.
+Official API docs: https://plateapi.com.au/docs/lookup/
