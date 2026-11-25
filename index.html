@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101820">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WA Rego">
+  <title>WA Rego Companion</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brandmark">WA</div>
+    <div><strong>Rego Companion</strong><small>Western Australia · Vehicle lookup</small></div>
+    <button id="historyBtn" class="iconbtn" aria-label="Search history">↺</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">ONE SEARCH · TWO SOURCES</p>
+      <h1>Look up a vehicle</h1>
+      <p class="muted">Enter a registration plate to open the official WA DoT check and Repco vehicle search from this app.</p>
+      <form id="searchForm">
+        <label for="plate">WA registration number</label>
+        <div class="searchrow">
+          <input id="plate" name="plate" placeholder="e.g. 1ABC123" maxlength="10" autocomplete="off" autocapitalize="characters" required>
+          <button class="primary" type="submit">Search</button>
+        </div>
+      </form>
+      <p class="hint">Your plate is remembered only in this browser's local search history.</p>
+    </section>
+
+    <section id="results" class="results hidden">
+      <div class="current">
+        <div><span class="eyebrow">CURRENT SEARCH</span><h2 id="currentPlate">—</h2></div>
+        <button id="newSearch" class="secondary">New search</button>
+      </div>
+      <div class="notice">
+        <strong>Important:</strong> The services do not provide a public integration for this app. Their pages may prevent being displayed inside another website. If a panel stays blank, use its <em>Open official site</em> link below. You may need to enter the plate again on that site.
+      </div>
+
+      <article class="service">
+        <div class="servicehead">
+          <div class="serviceicon dot">DoT</div>
+          <div class="servicetitle"><h3>WA Department of Transport</h3><p>Official vehicle rego status and expiry check</p></div>
+          <span class="tag">Official</span>
+        </div>
+        <div class="framewrap"><iframe id="dotFrame" title="WA DoT vehicle registration check" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
+        <a id="dotLink" class="openlink" href="https://online.transport.wa.gov.au/webExternal/registration/?0" target="_blank" rel="noopener">Open official DoT rego check ↗</a>
+      </article>
+
+      <article class="service">
+        <div class="servicehead">
+          <div class="serviceicon repco">R</div>
+          <div class="servicetitle"><h3>Repco vehicle search</h3><p>Vehicle identification and parts fitment</p></div>
+          <span class="tag">Public site</span>
+        </div>
+        <div class="framewrap"><iframe id="repcoFrame" title="Repco public website" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
+        <a id="repcoLink" class="openlink" href="https://www.repco.com.au/" target="_blank" rel="noopener">Open Repco website ↗</a>
+      </article>
+    </section>
+
+    <section class="history" id="historySection">
+      <div class="sectionhead"><h2>Recent searches</h2><button id="clearHistory" class="textbtn">Clear</button></div>
+      <div id="historyList" class="historylist"><p class="muted">Your recent plates will appear here.</p></div>
+    </section>
+
+    <section class="howto">
+      <h2>How it works</h2>
+      <ol>
+        <li>Enter the number plate above.</li>
+        <li>The app opens both service panels together.</li>
+        <li>Complete each provider's lookup and compare the results.</li>
+      </ol>
+      <p class="fineprint">This is an independent helper and is not affiliated with Repco or the WA Department of Transport. Always verify vehicle details with the original provider before relying on them.</p>
+    </section>
+  </main>
+
+  <nav class="bottomnav"><span class="active">⌕ <small>Search</small></span><span id="navHistory">◷ <small>History</small></span></nav>
+  <script src="./app.js"></script>
+</body>
+</html>
